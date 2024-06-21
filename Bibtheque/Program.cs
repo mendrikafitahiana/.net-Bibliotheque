@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Bibliotheque.Models.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Bibtheque.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // Ajout des services au conteneur
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -42,6 +45,19 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Utilisateur}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapGet("/", async context =>
+{
+    var userService = context.RequestServices.GetRequiredService<IUserService>();
+    if (userService.IsUserLoggedIn(context))
+    {
+        context.Response.Redirect("/Livre/Index");
+    }
+    else
+    {
+        context.Response.Redirect("/Utilisateur/Login");
+    }
+});
 
 app.Run();

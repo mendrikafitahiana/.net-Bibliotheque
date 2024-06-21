@@ -9,6 +9,6 @@
         public string username { get; set; }
         public string password { get; set; }
         public string adresse { get; set; }
-        public int role { get; set; }
+        public int role { get; set; } //role 1 : admin, role 2 : client
     }
 }

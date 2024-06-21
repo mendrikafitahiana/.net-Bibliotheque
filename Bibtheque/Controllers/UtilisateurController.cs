@@ -35,6 +35,12 @@ namespace Bibtheque.Controllers
                 return View();
             }
 
+            if(utilisateur != null && utilisateur.role != 1)
+            {
+                ModelState.AddModelError(string.Empty, "Pas d'accès à l'application! Accès administrateur.");
+                return View();
+            }
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, utilisateur.username),
