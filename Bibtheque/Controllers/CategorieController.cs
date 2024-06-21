@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Bibtheque.Models;
 using Bibtheque.Models.Context;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 
 namespace Bibtheque.Controllers
 {
@@ -155,6 +156,49 @@ namespace Bibtheque.Controllers
         private bool CategorieExists(int id)
         {
             return _context.Categorie.Any(e => e.id == id);
+        }
+
+        // GET: Categorie/Import
+        public IActionResult Import()
+        {
+            return View();
+        }
+
+        // POST: Categorie/ImportCSV
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportCSV(IFormFile csvFile)
+        {
+            if (csvFile != null && csvFile.Length > 0)
+            {
+                using (var reader = new StreamReader(csvFile.OpenReadStream()))
+                {
+                    var line = await reader.ReadLineAsync();
+                    while (line != null)
+                    {
+                        var values = line.Split(',');
+
+                        if (values.Length == 2) // Assuming CSV format: id, nom
+                        {
+                            var categorie = new Categorie
+                            {
+                                id = int.Parse(values[0], CultureInfo.InvariantCulture),
+                                nom = values[1]
+                            };
+                            _context.Categorie.Add(categorie);
+                        }
+
+                        line = await reader.ReadLineAsync();
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            ModelState.AddModelError("", "Veuillez sélectionner un fichier CSV.");
+            return View("Import");
         }
     }
 }
