@@ -10,6 +10,16 @@
     <h4>Livre</h4>
     <hr />
     <dl class="row">
+        <dd class="col-sm-12">
+            @if (!string.IsNullOrEmpty(Model.image))
+            {
+                <img src="@Url.Content("~/images/" + Model.image)" alt="@Model.titre" style="max-width: 200px; max-height: 200px;" />
+            }
+            else
+            {
+                <span>Pas d'image</span>
+            }
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.titre)
         </dt>
@@ -27,12 +37,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.resume)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.image)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.nbPage)
