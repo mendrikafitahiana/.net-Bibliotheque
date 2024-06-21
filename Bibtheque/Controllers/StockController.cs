@@ -50,7 +50,7 @@ namespace Bibtheque.Controllers
         // GET: Stock/Create
         public IActionResult Create()
         {
-            ViewData["LivreId"] = new SelectList(_context.Livre, "id", "id");
+            ViewData["LivreId"] = new SelectList(_context.Livre, "id", "titre");
             return View();
         }
 
@@ -67,7 +67,7 @@ namespace Bibtheque.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LivreId"] = new SelectList(_context.Livre, "id", "id", stock.LivreId);
+            ViewData["LivreId"] = new SelectList(_context.Livre, "id", "titre", stock.LivreId);
             return View(stock);
         }
 
@@ -84,7 +84,7 @@ namespace Bibtheque.Controllers
             {
                 return NotFound();
             }
-            ViewData["LivreId"] = new SelectList(_context.Livre, "id", "id", stock.LivreId);
+            ViewData["LivreId"] = new SelectList(_context.Livre, "id", "titre", stock.LivreId);
             return View(stock);
         }
 
@@ -120,7 +120,7 @@ namespace Bibtheque.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LivreId"] = new SelectList(_context.Livre, "id", "id", stock.LivreId);
+            ViewData["LivreId"] = new SelectList(_context.Livre, "id", "titre", stock.LivreId);
             return View(stock);
         }
 
