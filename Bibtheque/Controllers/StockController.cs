@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bibtheque.Models;
 using Bibtheque.Models.Context;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bibtheque.Controllers
 {
+    [Authorize]
     public class StockController : Controller
     {
         private readonly BibthequeContext _context;
