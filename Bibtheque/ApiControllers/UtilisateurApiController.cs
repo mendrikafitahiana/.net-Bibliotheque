@@ -88,6 +88,7 @@ namespace Bibtheque.ApiControllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.username),
+                new Claim(ClaimTypes.PrimarySid, user.id.ToString()),
                 new Claim(ClaimTypes.Name, user.nom),
                 new Claim(ClaimTypes.Email, user.numero),
                 new Claim(ClaimTypes.Surname, user.prenom),

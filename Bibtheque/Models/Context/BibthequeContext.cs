@@ -12,6 +12,7 @@ namespace Bibtheque.Models.Context
         public DbSet<Bibtheque.Models.Stock> Stock { get; set; } = default!;
         public DbSet<Utilisateur> Utilisateur { get; set; } = default!;
         public DbSet<Region> Region { get; set; } = default!;
+        public DbSet<Commande> Commande { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
