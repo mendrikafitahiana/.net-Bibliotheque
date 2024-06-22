@@ -14,7 +14,7 @@ namespace Bibtheque.Models
         public Utilisateur? utilisateur { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime dateCommande { get; set; }
+        public DateOnly dateCommande { get; set; }
 
     }
 }

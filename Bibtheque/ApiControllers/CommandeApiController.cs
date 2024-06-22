@@ -57,7 +57,7 @@ namespace Bibtheque.ApiControllers
                     commandeInsere.LivreId = idLivre;
                     commandeInsere.quantite = 1;
                     commandeInsere.UtilisateurId = userId;
-                    commandeInsere.dateCommande = new DateTime();
+                    commandeInsere.dateCommande = DateOnly.FromDateTime(DateTime.Now);
 
                     string getStockQuery = "SELECT quantite FROM Stock WHERE LivreId = @LivreId";
                     using (SqlCommand getStockCmd = new SqlCommand(getStockQuery, connection))
@@ -141,7 +141,7 @@ namespace Bibtheque.ApiControllers
                     commandeInsere.quantite = quantite;
                     commandeInsere.UtilisateurId = userId;
                     commandeInsere.id = idCommande;
-                    commandeInsere.dateCommande = new DateTime();
+                    commandeInsere.dateCommande = DateOnly.FromDateTime(DateTime.Now);
 
                     string getStockQuery = "SELECT quantite FROM Stock WHERE LivreId = @LivreId";
                     using (SqlCommand getStockCmd = new SqlCommand(getStockQuery, connection))
