@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Text;
 
 namespace Bibtheque.ApiControllers
 {
@@ -20,7 +21,10 @@ namespace Bibtheque.ApiControllers
         }
 
         [HttpGet("livres")]
-        public IActionResult GetLivres(int pageNumber = 1, int pageSize = 10)
+        public IActionResult RechercheLivres(
+            string? recherche = null,
+            int pageNumber = 1,
+            int pageSize = 10)
         {
             List<Livre> livres = new List<Livre>();
 
@@ -29,7 +33,7 @@ namespace Bibtheque.ApiControllers
             {
                 connection.Open();
 
-                string sql = @"
+                StringBuilder sqlBuilder = new StringBuilder(@"
                     SELECT * FROM 
                     (
                         SELECT ROW_NUMBER() OVER(ORDER BY Livre.Id) AS RowNum, 
@@ -40,10 +44,26 @@ namespace Bibtheque.ApiControllers
                         FROM Livre
                         JOIN Categorie ON Categorie.id = Livre.CategorieId
                         JOIN Stock ON Livre.id = Stock.LivreId
-                        WHERE Stock.quantite > 0
-                    ) AS RowConstrainedResult
+                        WHERE Stock.quantite > 0 ");
+
+                if (!string.IsNullOrEmpty(recherche))
+                {
+                    sqlBuilder.Append(@"
+                        AND (
+                            Livre.titre LIKE @Recherche OR 
+                            Livre.auteur LIKE @Recherche OR 
+                            Livre.resume LIKE @Recherche OR 
+                            CAST(Livre.dateEdition AS NVARCHAR) LIKE @Recherche OR 
+                            CAST(Livre.prix AS NVARCHAR) LIKE @Recherche OR 
+                            CAST(Livre.nbPage AS NVARCHAR) LIKE @Recherche
+                        )");
+                }
+
+                sqlBuilder.Append(@") AS RowConstrainedResult
                     WHERE RowNum >= @RowStart AND RowNum < @RowEnd
-                    ORDER BY RowNum";
+                    ORDER BY RowNum");
+
+                string sql = sqlBuilder.ToString();
 
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -52,6 +72,11 @@ namespace Bibtheque.ApiControllers
 
                     command.Parameters.AddWithValue("@RowStart", rowStart);
                     command.Parameters.AddWithValue("@RowEnd", rowEnd);
+
+                    if (!string.IsNullOrEmpty(recherche))
+                    {
+                        command.Parameters.AddWithValue("@Recherche", $"%{recherche}%");
+                    }
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
