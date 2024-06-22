@@ -43,10 +43,12 @@ namespace Bibtheque.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, utilisateur.username),
-                new Claim(ClaimTypes.Surname, utilisateur.nom),
+                new Claim(ClaimTypes.NameIdentifier, utilisateur.username),
+                new Claim(ClaimTypes.Name, utilisateur.nom),
+                new Claim(ClaimTypes.Email, utilisateur.numero),
+                new Claim(ClaimTypes.Surname, utilisateur.prenom),
                 new Claim(ClaimTypes.Role, utilisateur.role.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, utilisateur.id.ToString())
+                new Claim(ClaimTypes.Locality, utilisateur.adresse)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

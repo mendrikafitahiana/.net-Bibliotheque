@@ -5,6 +5,9 @@ using Microsoft.Extensions.Hosting;
 using Bibliotheque.Models.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Bibtheque.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,16 +16,38 @@ builder.Services.AddDbContext<BibthequeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BibthequeContext") ?? throw new InvalidOperationException("Connection string 'BibthequeContext' not found")));
 
 // Configuration de l'authentification
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+{
+    options.LoginPath = "/Utilisateur/Login";
+    options.LogoutPath = "/Utilisateur/Logout";
+    options.AccessDeniedPath = "/Utilisateur/AccessDenied";
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.LoginPath = "/Utilisateur/Login";
-        options.LogoutPath = "/Utilisateur/Logout";
-        options.AccessDeniedPath = "/Utilisateur/AccessDenied";
-    });
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 // Ajout des services au conteneur
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 
 builder.Services.AddScoped<IUserService, UserService>();
 
@@ -42,6 +67,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// routage API
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
