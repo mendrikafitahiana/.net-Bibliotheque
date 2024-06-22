@@ -57,6 +57,7 @@ namespace Bibtheque.ApiControllers
                     commandeInsere.LivreId = idLivre;
                     commandeInsere.quantite = 1;
                     commandeInsere.UtilisateurId = userId;
+                    commandeInsere.dateCommande = new DateTime();
 
                     string getStockQuery = "SELECT quantite FROM Stock WHERE LivreId = @LivreId";
                     using (SqlCommand getStockCmd = new SqlCommand(getStockQuery, connection))
@@ -77,8 +78,8 @@ namespace Bibtheque.ApiControllers
                         commandeInsere.total = prix * commandeInsere.quantite;
                     }
 
-                    string insertQuery = @"INSERT INTO Commande (quantite, total, LivreId, etat, UtilisateurId) 
-                                       VALUES (@quantite, @total, @LivreId, @etat, @utilisateur);
+                    string insertQuery = @"INSERT INTO Commande (quantite, total, LivreId, etat, UtilisateurId, dateCommande) 
+                                       VALUES (@quantite, @total, @LivreId, @etat, @utilisateur, @dateCommande);
                                        SELECT SCOPE_IDENTITY();";
 
                     using (SqlCommand cmd = new SqlCommand(insertQuery, connection))
@@ -88,6 +89,7 @@ namespace Bibtheque.ApiControllers
                         cmd.Parameters.AddWithValue("@LivreId", commandeInsere.LivreId);
                         cmd.Parameters.AddWithValue("@etat", 0); // État initial : panier
                         cmd.Parameters.AddWithValue("@utilisateur", userId);
+                        cmd.Parameters.AddWithValue("@dateCommande", commandeInsere.dateCommande);
 
                         commandeInsere.id = Convert.ToInt32(cmd.ExecuteScalar());
                     }
@@ -139,6 +141,7 @@ namespace Bibtheque.ApiControllers
                     commandeInsere.quantite = quantite;
                     commandeInsere.UtilisateurId = userId;
                     commandeInsere.id = idCommande;
+                    commandeInsere.dateCommande = new DateTime();
 
                     string getStockQuery = "SELECT quantite FROM Stock WHERE LivreId = @LivreId";
                     using (SqlCommand getStockCmd = new SqlCommand(getStockQuery, connection))
@@ -159,7 +162,7 @@ namespace Bibtheque.ApiControllers
                         commandeInsere.total = prix * commandeInsere.quantite;
                     }
 
-                    string upddateQuery = @"UPDATE Commande SET etat = @etat, quantite = @quantite, total = @total 
+                    string upddateQuery = @"UPDATE Commande SET etat = @etat, quantite = @quantite, total = @total, dateCommande = @dateCommande  
                                            WHERE id = @idCommande;";
 
                     using (SqlCommand cmd = new SqlCommand(upddateQuery, connection))
@@ -168,6 +171,7 @@ namespace Bibtheque.ApiControllers
                         cmd.Parameters.AddWithValue("@total", commandeInsere.total);
                         cmd.Parameters.AddWithValue("@etat", 1); // État final : validé
                         cmd.Parameters.AddWithValue("@idCommande", commandeInsere.id);
+                        cmd.Parameters.AddWithValue("@dateCommande", commandeInsere.dateCommande);
                         cmd.ExecuteNonQuery();
 
                         commandeInsere.etat = 1;

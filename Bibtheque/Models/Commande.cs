@@ -1,4 +1,6 @@
-﻿namespace Bibtheque.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Bibtheque.Models
 {
     public class Commande
     {
@@ -10,6 +12,9 @@
         public int etat { get; set; } //etat 0 panier, etat 1 commande déjà acheté
         public int UtilisateurId { get; set; }
         public Utilisateur? utilisateur { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime dateCommande { get; set; }
 
     }
 }
