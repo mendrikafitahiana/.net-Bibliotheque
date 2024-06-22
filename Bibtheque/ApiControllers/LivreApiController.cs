@@ -24,8 +24,8 @@ namespace Bibtheque.ApiControllers
         public IActionResult RechercheLivres(
             string? recherche = null,
             int pageNumber = 1,
-            int pageSize = 10)
-        {
+            int pageSize = 10
+        ){
             List<Livre> livres = new List<Livre>();
 
             string connectionString = _configuration.GetConnectionString("BibthequeContext");
@@ -111,6 +111,70 @@ namespace Bibtheque.ApiControllers
             }
 
             return Ok(new { PageNumber = pageNumber, PageSize = pageSize, Livres = livres });
+        }
+
+        [HttpGet("detail/{id}")]
+        public IActionResult GetLivreById(int id)
+        {
+            Livre livre = null;
+
+            string connectionString = _configuration.GetConnectionString("BibthequeContext");
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string sql = @"
+                    SELECT Livre.id, Livre.titre, Livre.auteur, Livre.resume, Livre.image, Livre.nbPage, 
+                           Livre.prix, Livre.dateEdition, 
+                           Categorie.id AS categorieId, Categorie.nom AS categorieNom,
+                           Stock.id AS stockId, Stock.quantite AS exemplaire
+                    FROM Livre
+                    JOIN Categorie ON Categorie.id = Livre.CategorieId
+                    JOIN Stock ON Livre.id = Stock.LivreId
+                    WHERE Livre.id = @LivreId AND Stock.quantite > 0";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@LivreId", id);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            livre = new Livre
+                            {
+                                id = Convert.ToInt32(reader["id"]),
+                                titre = reader["titre"].ToString(),
+                                auteur = reader["auteur"].ToString(),
+                                resume = reader["resume"].ToString(),
+                                image = reader["image"].ToString(),
+                                nbPage = Convert.ToInt32(reader["nbPage"]),
+                                prix = Convert.ToDouble(reader["prix"]),
+                                dateEdition = Convert.ToDateTime(reader["dateEdition"]),
+                                CategorieId = Convert.ToInt32(reader["categorieId"]),
+                                Categorie = new Categorie
+                                {
+                                    id = Convert.ToInt32(reader["categorieId"]),
+                                    nom = reader["categorieNom"].ToString()
+                                },
+                                Stock = new Stock
+                                {
+                                    id = Convert.ToInt32(reader["stockId"]),
+                                    quantite = Convert.ToInt32(reader["exemplaire"]),
+                                    LivreId = Convert.ToInt32(reader["id"])
+                                }
+                            };
+                        }
+                    }
+                }
+            }
+
+            if (livre == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(livre);
         }
     }
 }
