@@ -197,6 +197,27 @@ namespace Bibtheque.ApiControllers
                         updateStockCmd.ExecuteNonQuery();
                     }
 
+                    string livreQuery = "SELECT * from Livre WHERE id = @LivreId";
+                    using (SqlCommand livreCmd = new SqlCommand(livreQuery, connection))
+                    {
+                        livreCmd.Parameters.AddWithValue("@LivreId", commandeInsere.LivreId);
+
+                        using (SqlDataReader reader = livreCmd.ExecuteReader())
+                        {
+                            if(reader.Read())
+                            {
+                                commandeInsere.Livre = new Livre
+                                {
+                                    id = commandeInsere.LivreId,
+                                    titre = reader["titre"].ToString(),
+                                    auteur = reader["auteur"].ToString(),
+                                    prix = Convert.ToInt32(reader["prix"])
+
+                                };
+                            }
+                        }
+                    }
+
                 }
                 return Ok(new { commande = commandeInsere });
             }
