@@ -13,6 +13,7 @@ namespace Bibtheque.Models.Context
         public DbSet<Utilisateur> Utilisateur { get; set; } = default!;
         public DbSet<Region> Region { get; set; } = default!;
         public DbSet<Commande> Commande { get; set; } = default!;
+        public DbSet<Paiement> Paiement { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

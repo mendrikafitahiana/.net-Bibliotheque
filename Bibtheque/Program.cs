@@ -8,6 +8,7 @@ using Bibtheque.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Bibtheque.ApiControllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,7 @@ builder.Services.AddControllersWithViews()
     });
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<CommandeApiController>();
 
 var app = builder.Build();
 

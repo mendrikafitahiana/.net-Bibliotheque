@@ -43,7 +43,7 @@ namespace Bibtheque.ApiControllers
                 {
                     connection.Open();
 
-                    string checkLivreQuery = "SELECT COUNT(*) FROM Livre WHERE Id = @LivreId";
+                    string checkLivreQuery = "SELECT COUNT(*) FROM Livre WHERE id = @LivreId";
                     using (SqlCommand checkLivreCmd = new SqlCommand(checkLivreQuery, connection))
                     {
                         checkLivreCmd.Parameters.AddWithValue("@LivreId", idLivre);
@@ -70,7 +70,7 @@ namespace Bibtheque.ApiControllers
                         }
                     }
 
-                    string getPrixQuery = "SELECT prix FROM Livre WHERE Id = @LivreId";
+                    string getPrixQuery = "SELECT prix FROM Livre WHERE id = @LivreId";
                     using (SqlCommand getPrixCmd = new SqlCommand(getPrixQuery, connection))
                     {
                         getPrixCmd.Parameters.AddWithValue("@LivreId", idLivre);
@@ -101,9 +101,9 @@ namespace Bibtheque.ApiControllers
         }
 
         [HttpPost("validCommande")]
-        public IActionResult ValiderCommande([FromBody] JsonElement commande)
+        public IActionResult ValiderCommande([FromBody] JsonElement commande, int userId)
         {
-            int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.PrimarySid));
+            //int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.PrimarySid));
 
             if (string.IsNullOrEmpty(userId.ToString()))
             {
@@ -126,7 +126,7 @@ namespace Bibtheque.ApiControllers
                 {
                     connection.Open();
 
-                    string checkLivreQuery = "SELECT COUNT(*) FROM Livre WHERE Id = @LivreId";
+                    string checkLivreQuery = "SELECT COUNT(*) FROM Livre WHERE id = @LivreId";
                     using (SqlCommand checkLivreCmd = new SqlCommand(checkLivreQuery, connection))
                     {
                         checkLivreCmd.Parameters.AddWithValue("@LivreId", idLivre);
@@ -154,7 +154,7 @@ namespace Bibtheque.ApiControllers
                         }
                     }
 
-                    string getPrixQuery = "SELECT prix FROM Livre WHERE Id = @LivreId";
+                    string getPrixQuery = "SELECT prix FROM Livre WHERE id = @LivreId";
                     using (SqlCommand getPrixCmd = new SqlCommand(getPrixQuery, connection))
                     {
                         getPrixCmd.Parameters.AddWithValue("@LivreId", idLivre);
