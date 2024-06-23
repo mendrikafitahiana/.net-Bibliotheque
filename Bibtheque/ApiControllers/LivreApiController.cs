@@ -27,11 +27,40 @@ namespace Bibtheque.ApiControllers
             int pageSize = 10
         ){
             List<Livre> livres = new List<Livre>();
+            int totalCount = 0;
 
             string connectionString = _configuration.GetConnectionString("BibthequeContext");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
+
+                StringBuilder countSqlBuilder = new StringBuilder(@"
+                    SELECT COUNT(*) 
+                    FROM Livre
+                    JOIN Stock ON Livre.id = Stock.LivreId
+                    WHERE Stock.quantite > 0");
+
+                if (!string.IsNullOrEmpty(recherche))
+                {
+                    countSqlBuilder.Append(@"
+                    AND (
+                        Livre.titre LIKE @Recherche OR 
+                        Livre.auteur LIKE @Recherche OR 
+                        Livre.resume LIKE @Recherche OR 
+                        CAST(Livre.dateEdition AS NVARCHAR) LIKE @Recherche OR 
+                        CAST(Livre.prix AS NVARCHAR) LIKE @Recherche OR 
+                        CAST(Livre.nbPage AS NVARCHAR) LIKE @Recherche
+                    )");
+                }
+
+                using (SqlCommand countCmd = new SqlCommand(countSqlBuilder.ToString(), connection))
+                {
+                    if (!string.IsNullOrEmpty(recherche))
+                    {
+                        countCmd.Parameters.AddWithValue("@Recherche", $"%{recherche}%");
+                    }
+                    totalCount = (int)countCmd.ExecuteScalar();
+                }
 
                 StringBuilder sqlBuilder = new StringBuilder(@"
                     SELECT * FROM 
@@ -110,7 +139,14 @@ namespace Bibtheque.ApiControllers
                 }
             }
 
-            return Ok(new { PageNumber = pageNumber, PageSize = pageSize, Livres = livres });
+            return Ok(new 
+            {
+                TotalCount = totalCount,
+                PageCount = (int)Math.Ceiling((double)totalCount / pageSize),
+                CurrentPage = pageNumber, 
+                PageSize = pageSize, 
+                Livres = livres 
+            });
         }
 
         [HttpGet("detail/{id}")]
