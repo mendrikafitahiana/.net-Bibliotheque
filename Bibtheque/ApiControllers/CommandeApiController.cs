@@ -505,5 +505,52 @@ namespace Bibtheque.ApiControllers
 
             return Ok(result);
         }
+
+        [HttpDelete("annule/{idCommande}")]
+        public IActionResult AnnulerCommande(int idCommande)
+        {
+            int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.PrimarySid));
+
+            if (string.IsNullOrEmpty(userId.ToString()))
+            {
+                return Unauthorized("Utilisateur non authentifié.");
+            }
+
+            string connectionString = _configuration.GetConnectionString("BibthequeContext");
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string getUserCommandeQuery = "SELECT UtilisateurId FROM Commande WHERE id = @commandeId";
+                using (SqlCommand userCommandeCmd = new SqlCommand(getUserCommandeQuery, connection))
+                {
+                    userCommandeCmd.Parameters.AddWithValue("@commandeId", idCommande);
+                    int user = (int)userCommandeCmd.ExecuteScalar();
+                    if (user != userId)
+                    {
+                        return BadRequest("Ce n'est pas votre commande");
+                    }
+                }
+
+                string geEtatCommandeQuery = "SELECT etat FROM Commande WHERE id = @commandeId";
+                using (SqlCommand etatCommandeCmd = new SqlCommand(geEtatCommandeQuery, connection))
+                {
+                    etatCommandeCmd.Parameters.AddWithValue("@commandeId", idCommande);
+                    int etat = (int)etatCommandeCmd.ExecuteScalar();
+                    if(etat == 1)
+                    {
+                        return BadRequest("Commande déjà validé , ne peut pas être supprimé");
+                    }
+                }
+
+                string deleteCommandeQuery = "DELETE FROM Commande WHERE id = @commandeId";
+                using (SqlCommand deleteCommandeCmd = new SqlCommand(deleteCommandeQuery, connection))
+                {
+                    deleteCommandeCmd.Parameters.AddWithValue("@commandeId", idCommande);
+                    deleteCommandeCmd.ExecuteNonQuery();
+                }
+            }
+            return Ok(new { message = "Commande annulé et supprimé" });
+        }
     }
 }
