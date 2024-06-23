@@ -43,6 +43,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Ajouter les services CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 // Ajout des services au conteneur
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
@@ -66,6 +77,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Utiliser le middleware CORS
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
