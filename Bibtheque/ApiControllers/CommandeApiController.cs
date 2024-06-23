@@ -55,6 +55,17 @@ namespace Bibtheque.ApiControllers
                         }
                     }
 
+                    string checkLivre2Query = "SELECT COUNT(*) FROM Commande WHERE LivreId = @LivreId";
+                    using (SqlCommand checkLivre2Cmd = new SqlCommand(checkLivre2Query, connection))
+                    {
+                        checkLivre2Cmd.Parameters.AddWithValue("@LivreId", idLivre);
+                        int livreCount = (int)checkLivre2Cmd.ExecuteScalar();
+                        if (livreCount > 0)
+                        {
+                            return BadRequest($"Livre déjà commandé");
+                        }
+                    }
+
                     commandeInsere.LivreId = idLivre;
                     commandeInsere.quantite = 1;
                     commandeInsere.UtilisateurId = userId;
