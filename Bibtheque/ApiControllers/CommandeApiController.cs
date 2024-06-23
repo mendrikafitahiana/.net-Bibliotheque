@@ -55,7 +55,7 @@ namespace Bibtheque.ApiControllers
                         }
                     }
 
-                    string checkLivre2Query = "SELECT COUNT(*) FROM Commande WHERE LivreId = @LivreId";
+                    string checkLivre2Query = "SELECT COUNT(*) FROM Commande WHERE LivreId = @LivreId AND etat = 0";
                     using (SqlCommand checkLivre2Cmd = new SqlCommand(checkLivre2Query, connection))
                     {
                         checkLivre2Cmd.Parameters.AddWithValue("@LivreId", idLivre);
