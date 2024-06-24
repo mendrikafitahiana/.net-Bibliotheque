@@ -100,7 +100,7 @@ namespace Bibtheque.ApiControllers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(500),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
