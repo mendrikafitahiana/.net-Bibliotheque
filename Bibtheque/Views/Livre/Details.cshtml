@@ -4,67 +4,83 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h2>Détail d'un livre</h2>
 
-<div>
-    <h4>Livre</h4>
-    <hr />
-    <dl class="row">
-        <dd class="col-sm-12">
-            @if (!string.IsNullOrEmpty(Model.image))
-            {
-                <img src="@Url.Content("~/images/" + Model.image)" alt="@Model.titre" style="max-width: 200px; max-height: 200px;" />
-            }
-            else
-            {
-                <span>Pas d'image</span>
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.titre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.titre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.auteur)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.auteur)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.resume)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.resume)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.nbPage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.nbPage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.prix)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.prix)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.dateEdition)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.dateEdition)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categorie)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categorie.id)
-        </dd>
-    </dl>
+<hr/>
+<div class="d-flex justify-content-center align-items-center flex-column">
+<br/>
+    <div class="card" style="width: 50rem;">
+        @if (!string.IsNullOrEmpty(Model.image))
+        {
+            <img src="@Url.Content("~/images/" + Model.image)" alt="@Model.titre" class="card-img-top" style="max-width: 200px; max-height: 200px; display: block; margin-left: auto; margin-right: auto;" />
+        }
+        else
+        {
+            <span>Pas d'image</span>
+        }
+
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center font-weight-bold justify-content-center">
+                    <b>TITRE:</b>
+                </div>
+                <div class="col-sm-8 d-flex align-items-center justify-content-center">
+                    @Html.DisplayFor(model => model.titre)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center font-weight-bold justify-content-center">
+                    <b>AUTEUR:</b>
+                </div>
+                <div class="col-sm-8 d-flex align-items-center justify-content-center">
+                    @Html.DisplayFor(model => model.auteur)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center font-weight-bold justify-content-center">
+                    <b>RESUME DU LIVRE:</b>
+                </div>
+                <div class="col-sm-8 d-flex align-items-center justify-content-center">
+                    @Html.DisplayFor(model => model.resume)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center font-weight-bold justify-content-center">
+                    <b>NOMBRE DE PAGE:</b>
+                </div>
+                <div class="col-sm-8 d-flex align-items-center justify-content-center">
+                    @Html.DisplayFor(model => model.nbPage)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center font-weight-bold justify-content-center">
+                    <b>PRIX:</b>
+                </div>
+                <div class="col-sm-8 d-flex align-items-center justify-content-center">
+                    @Html.DisplayFor(model => model.prix)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center font-weight-bold justify-content-center">
+                    <b>DATE D'EDITION:</b>
+                </div>
+                <div class="col-sm-8 d-flex align-items-center justify-content-center">
+                    @Html.DisplayFor(model => model.dateEdition)
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 d-flex align-items-center font-weight-bold justify-content-center">
+                    <b>CATEGORIE:</b>
+                </div>
+                <div class="col-sm-8 d-flex align-items-center justify-content-center">
+                    @Html.DisplayFor(model => model.Categorie.nom)
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="mt-3 text-center">
+    <a asp-action="Edit" asp-route-id="@Model?.id" class="btn btn-outline-warning">Modifier</a>
+    <a asp-action="Index" class="btn btn-outline-secondary"> <- Revenir à la liste des livres</a>
 </div>

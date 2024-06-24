@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Création de livre</h2>
+<h2>CrÃ©ation de livre</h2>
 
 <hr />
 <div class="row">
@@ -30,9 +30,9 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label asp-for="resume" class="col-sm-2 col-form-label" for="resume">Résumé</label>
+                <label asp-for="resume" class="col-sm-2 col-form-label" for="resume">RÃ©sumÃ©</label>
                 <div class="col-sm-10">
-                    <input asp-for="resume" class="form-control" id="résumé" />
+                    <input asp-for="resume" class="form-control" id="rÃ©sumÃ©" />
                     <span asp-validation-for="resume" class="text-danger"></span>
                 </div>
             </div>
@@ -58,14 +58,14 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label asp-for="dateEdition" class="col-sm-2 col-form-label" for="dateEdition">Date d'édition</label>
+                <label asp-for="dateEdition" class="col-sm-2 col-form-label" for="dateEdition">Date d'Ã©dition</label>
                 <div class="col-sm-10">
                     <input asp-for="dateEdition" class="form-control" id="dateEdition"/>
                     <span asp-validation-for="dateEdition" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mb-3">
-                <label asp-for="CategorieId" class="col-sm-2 col-form-label" for="categorie">Catégorie</label>
+                <label asp-for="CategorieId" class="col-sm-2 col-form-label" for="categorie">CatÃ©gorie</label>
                 <div class="col-sm-10">
                     <select asp-for="CategorieId" class="form-control" asp-items="ViewBag.CategorieId" id="categorie"></select>
                     <span asp-validation-for="CategorieId" class="text-danger"></span>
@@ -73,7 +73,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col text-center">
-                    <input type="submit" value="Créer" class="btn btn-outline-primary d-inline-block" />
+                    <input type="submit" value="CrÃ©er" class="btn btn-outline-primary d-inline-block" />
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
     </div>
     <div class="col-md-2"></div>
     <div>
-        <a asp-action="Index" class="btn btn-outline-secondary"> <- Revenir à la liste des livres</a>
+        <a asp-action="Index" class="btn btn-outline-secondary"> <- Revenir Ã  la liste des livres</a>
     </div>
 </div>
 
@@ -94,7 +94,7 @@
             var imageInput = document.getElementById('imageInput');
             var imagePreview = document.getElementById('imagePreview');
 
-            // Fonction pour mettre à jour l'aperçu de l'image
+            // Fonction pour mettre ï¿½ jour l'aperï¿½u de l'image
             function updateImagePreview() {
                 var imageName = imageInput.value;
                 if (imageName) {
@@ -116,10 +116,10 @@
                 }
             }
 
-            // Mettre à jour l'aperçu au chargement de la page
+            // Mettre ï¿½ jour l'aperï¿½u au chargement de la page
             updateImagePreview();
 
-            // Mettre à jour l'aperçu lorsque l'utilisateur modifie le champ de l'image
+            // Mettre ï¿½ jour l'aperï¿½u lorsque l'utilisateur modifie le champ de l'image
             imageInput.addEventListener('input', updateImagePreview);
         });
     </script>
