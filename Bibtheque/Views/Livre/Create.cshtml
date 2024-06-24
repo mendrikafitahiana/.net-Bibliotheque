@@ -4,66 +4,85 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h2>Création de livre</h2>
 
-<h4>Livre</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class ="col-md-2"></div>
+    <div class="col-md-8">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="row mb-3">
                 <img id="imagePreview" src="" alt="Image preview" style="max-width: 200px; max-height: 200px; display: none;" />
             </div>
-            <div class="form-group">
-                <label asp-for="titre" class="control-label"></label>
-                <input asp-for="titre" class="form-control" />
-                <span asp-validation-for="titre" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="titre" class="col-sm-2 col-form-label" for="titre">Titre du livre</label>
+                <div class="col-sm-10">
+                    <input asp-for="titre" class="form-control" id="titre"/>
+                    <span asp-validation-for="titre" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="auteur" class="control-label"></label>
-                <input asp-for="auteur" class="form-control" />
-                <span asp-validation-for="auteur" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="auteur" class="col-sm-2 col-form-label" for="auteur">Auteur du livre</label>
+                <div class="col-sm-10">
+                    <input asp-for="auteur" class="form-control" id="auteur" />
+                    <span asp-validation-for="auteur" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="resume" class="control-label"></label>
-                <input asp-for="resume" class="form-control" />
-                <span asp-validation-for="resume" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="resume" class="col-sm-2 col-form-label" for="resume">Résumé</label>
+                <div class="col-sm-10">
+                    <input asp-for="resume" class="form-control" id="résumé" />
+                    <span asp-validation-for="resume" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="image" class="control-label"></label>
-                <input asp-for="image" class="form-control" id="imageInput" />
-                <span asp-validation-for="image" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="image" class="col-sm-2 col-form-label" for="imageInput">Couverture du livre</label>
+                <div class="col-sm-10">
+                    <input asp-for="image" class="form-control" id="imageInput" />
+                    <span asp-validation-for="image" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="nbPage" class="control-label"></label>
-                <input asp-for="nbPage" class="form-control" />
-                <span asp-validation-for="nbPage" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="nbPage" class="col-sm-2 col-form-label" for="nbPage">Nombre de pages</label>
+                <div class="col-sm-10">
+                    <input asp-for="nbPage" class="form-control" id="nbPage"/>
+                    <span asp-validation-for="nbPage" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="prix" class="control-label"></label>
-                <input asp-for="prix" class="form-control" />
-                <span asp-validation-for="prix" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="prix" class="col-sm-2 col-form-label" for="prix">Prix du livre</label>
+                <div class="col-sm-10">
+                    <input asp-for="prix" class="form-control" id="prix"/>
+                    <span asp-validation-for="prix" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="dateEdition" class="control-label"></label>
-                <input asp-for="dateEdition" class="form-control" />
-                <span asp-validation-for="dateEdition" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="dateEdition" class="col-sm-2 col-form-label" for="dateEdition">Date d'édition</label>
+                <div class="col-sm-10">
+                    <input asp-for="dateEdition" class="form-control" id="dateEdition"/>
+                    <span asp-validation-for="dateEdition" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CategorieId" class="control-label"></label>
-                <select asp-for="CategorieId" class="form-control" asp-items="ViewBag.CategorieId"></select>
-                <span asp-validation-for="CategorieId" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="CategorieId" class="col-sm-2 col-form-label" for="categorie">Catégorie</label>
+                <div class="col-sm-10">
+                    <select asp-for="CategorieId" class="form-control" asp-items="ViewBag.CategorieId" id="categorie"></select>
+                    <span asp-validation-for="CategorieId" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="row mb-3">
+                <div class="col text-center">
+                    <input type="submit" value="Créer" class="btn btn-outline-primary d-inline-block" />
+                </div>
             </div>
+
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div class="col-md-2"></div>
+    <div>
+        <a asp-action="Index" class="btn btn-outline-secondary"> <- Revenir à la liste des livres</a>
+    </div>
 </div>
 
 @section Scripts {
