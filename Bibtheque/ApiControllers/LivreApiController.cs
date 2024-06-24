@@ -23,6 +23,7 @@ namespace Bibtheque.ApiControllers
         [HttpGet("livres")]
         public IActionResult RechercheLivres(
             string? recherche = null,
+            int? categ = null,
             int pageNumber = 1,
             int pageSize = 10
         ){
@@ -87,6 +88,11 @@ namespace Bibtheque.ApiControllers
                             CAST(Livre.nbPage AS NVARCHAR) LIKE @Recherche
                         )");
                 }
+                if (categ != null)
+                {
+                    sqlBuilder.Append(@"
+                        AND Livre.CategorieId = @categ");
+                }
 
                 sqlBuilder.Append(@") AS RowConstrainedResult
                     WHERE RowNum >= @RowStart AND RowNum < @RowEnd
@@ -105,6 +111,11 @@ namespace Bibtheque.ApiControllers
                     if (!string.IsNullOrEmpty(recherche))
                     {
                         command.Parameters.AddWithValue("@Recherche", $"%{recherche}%");
+                    }
+
+                    if (categ != null)
+                    {
+                        command.Parameters.AddWithValue("@categ", categ);
                     }
 
                     using (SqlDataReader reader = command.ExecuteReader())
