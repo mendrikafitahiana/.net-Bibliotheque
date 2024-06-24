@@ -4,34 +4,39 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Modifier le nombre d'exemplaires</h1>
 
-<h4>Stock</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
-            <div class="form-group">
-                <label asp-for="quantite" class="control-label"></label>
-                <input asp-for="quantite" class="form-control" />
-                <span asp-validation-for="quantite" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="quantite" class="col-sm-2 col-form-label" for="quantite">Nombre d'exemplaires</label>
+                <div class="col-sm-10">
+                    <input asp-for="quantite" min="1" class="form-control" id="quantite"/>
+                    <span asp-validation-for="quantite" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LivreId" class="control-label"></label>
-                <select asp-for="LivreId" class="form-control" asp-items="ViewBag.LivreId"></select>
-                <span asp-validation-for="LivreId" class="text-danger"></span>
+            <div class="row mb-3">
+                <label asp-for="LivreId" class="col-sm-2 col-form-label" for="livre">Livre</label>
+                <div class="col-sm-10">
+                    <select asp-for="LivreId" class="form-control" asp-items="ViewBag.LivreId" id="livre"></select>
+                    <span asp-validation-for="LivreId" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="row mb-3">
+                <div class="col text-center">
+                    <input type="submit" value="Ajouter" class="btn btn-outline-primary d-inline-block" />
+                </div>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-secondary"> <- Revenir à la liste des exemplaires</a>
 </div>
 
 @section Scripts {

@@ -1,22 +1,21 @@
 @model IEnumerable<Bibtheque.Models.Region>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Régions";
 }
 
-<h1>Index</h1>
-
+<h1>Liste des régions</h1>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-outline-success">Ajouter une région</a>
 </p>
-<table class="table">
+<table class="table" class="table table-striped" style="text-align: center">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.nom)
+                Région
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.nbJourLivraison)
+                Nombre de jours de livraison
             </th>
             <th></th>
         </tr>
@@ -31,8 +30,8 @@
                 @Html.DisplayFor(modelItem => item.nbJourLivraison) j
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.id" class="btn btn-outline-warning">Modifier</a>
+                <a asp-action="Delete" asp-route-id="@item.id" class="btn btn-outline-danger">Supprimer</a>
             </td>
         </tr>
 }

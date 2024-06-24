@@ -1,13 +1,13 @@
 @model IEnumerable<Bibtheque.Models.Categorie>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categories";
 }
 
 <h1>Liste des catégories</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-outline-success">Créer un catégorie</a>
+    <a asp-action="Create" class="btn btn-outline-success">Créer une catégorie</a>
 </p>
 <table class="table" class="table table-striped" style="text-align: center">
     <thead>
@@ -25,9 +25,8 @@
                 @Html.DisplayFor(modelItem => item.nom)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.id" class="btn btn-outline-warning">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.id" class="btn btn-outline-info">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.id" class="btn btn-outline-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.id" class="btn btn-outline-warning">Modifier</a>
+                <a asp-action="Delete" asp-route-id="@item.id" class="btn btn-outline-danger">Supprimer</a>
             </td>
         </tr>
 }
